@@ -37,7 +37,6 @@ void calcularProm(Tlista lista, int promedio, int n){
 	promedio=promedio/n;
 	cout<<endl<<"promedio: "<<promedio<<endl<<endl;
 }
-
 int main(void){
 	int n,promedio;
 	Tlista lista = NULL;
@@ -57,5 +56,4 @@ int main(void){
 	calcularProm(lista,promedio,n);
 	system("pause");
 	return 0;
-	
 }
