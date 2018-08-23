@@ -1,0 +1,242 @@
+#include<iostream>
+#include<cstdlib>
+#include<string.h>
+#define maxchar 50
+using namespace std;
+struct nodo{
+	int codigo;
+	char nombres[maxchar];
+	char apellidos[maxchar];
+	char direccion[maxchar];
+	int telefono;
+	struct nodo *sgte;	
+};
+typedef struct nodo *PLista;
+
+void menu(void){
+	cout<<"\n\n\t\t[ REGISTRO DE PACIENTE ]\n";
+	cout<<"\t\t---------------------------\n\n";
+	cout<<"1. Registrar paciente     "<<endl;
+	cout<<"2. Eliminar datos de paciente"<<endl;
+	cout<<"3. Actualizar pacientes "<<endl;
+	cout<<"4. Mostar listado "<<endl;
+	cout<<"5. Copiar datos de un paciente "<<endl;
+	cout<<"6. Salir"<<endl;
+	cout<<"\n ingrese opcion: ";
+}
+
+void menu_actualizar(void){
+	cout<<"\n\t\t[ ESPECIFIQUE CAMPO A ACTALIZAR ]\n";
+	cout<<"\t\t-----------------------------\n\n";
+	cout<<"1.Nombre                        "<<endl;
+	cout<<"2.Apellidos                     "<<endl;
+	cout<<"3.Direccion                     "<<endl;
+	cout<<"4.Telefono                      "<<endl;
+	cout<<"5.Salir                         "<<endl;
+	cout<<"\n Ingrese opcion: ";
+}
+
+void regisrar_pacientes(PLista &lista){
+	PLista t,q = new(struct nodo);
+	cout<<"\n\n\t\t[ REGISTRO ]\n";
+	cout<<"\t\t-------------";
+	cout<<"\n\tDATOS DEL PACIENTE";
+	cin.ignore();cout<<"\n\n\tCodigo:";cin>>q->codigo;
+	cin.ignore();cout<<"\n\tNombres:"; cin.getline(q->nombres,maxchar);
+	cin.ignore();cout<<"\tApellidos:"; cin.getline(q->apellidos,maxchar);
+	cin.ignore();cout<<"\tDireccion:"; cin.getline(q->direccion,maxchar);
+	cin.ignore();cout<<"\n\tTelefono:"; cin>>q->telefono;
+	system("cls");
+	q->sgte = NULL;
+	if(lista==NULL){
+		lista = q;
+	} else{
+		t=lista;
+		while(t->sgte!=NULL){
+			t = t->sgte;
+		}
+		t->sgte = q;
+	}
+}
+
+void eliminar_paciente(PLista &lista){
+	int cod;
+	PLista q , t;
+	q = lista;
+	cout<<"\n\n\n\tELIMINAR UN PACIENTE";
+	cout<<"\n\n\tINGRESE CODIGO: ";cin>>cod;
+	while(q!=NULL){
+	
+			if(q->codigo == cod){
+				if(q==lista)
+					lista=lista->sgte;
+				else
+					t->sgte = q->sgte;
+				delete(q);
+				cout<<"\n\nREGISTRO ELIMINADO...!!!!!\n";
+				return ;
+			} else{
+				t= q;
+				q= q->sgte;
+			}
+		
+		if(q==NULL)
+			cout<<"\n\tCODIGO INCORRECTO...!!!\n";
+	}
+}
+
+void actualizar_paciente(PLista lista){
+	int cod, x;
+	PLista q;
+	q=lista;
+	cout<<"\n\n\n\tActualizar registro de paciente";
+	cout<<"\n\n\tIngrese codigo ";cin>>cod;
+	while(q!=NULL){
+		if(q->codigo == cod){
+			system("cls");
+			cout<<"\n\tDatos del paciente ";
+			cout<<"\n\t-------------------";
+			cout<<"\n\n\tCODIGO: "<<q->codigo<<endl;
+			cout<<"\n\tNombres: "<<q->nombres<<endl;
+			cout<<"\tApellidos: "<<q->apellidos<<endl;
+			cout<<"\tDireccion: "<<q->direccion<<endl;
+			cout<<"\tTelefono: "<<q->telefono<<endl;
+			menu_actualizar();
+			cin>>x;
+			switch(x){
+				case 1: cout<<"\n\n\tINGRESE NOMBRE: ";
+						cin.ignore();cin.getline(q->nombres,maxchar);
+						break;
+				case 2: cout<<"n\n\tINGRESE APELLIDOS:";
+						cin.ignore();cin.getline(q->apellidos,maxchar);
+						break;
+				case 3: cout<<"\n\n\tINGRESE DIRECCION:";
+						cin.ignore();cin.getline(q->direccion,maxchar);
+						break;
+				case 4: cout<<"\n\n\tINGRESE TELEFONO:";
+						cin>>q->telefono;
+						break;
+				default: cout<<"\nINGRESE UNA OPCION VALIDA...\n";break;
+			}
+			cout<<"\n\n\tREGISTRO ACTUALIZADO...!!!!\n";
+			return;
+		}else{
+			q=q->sgte;
+		}
+	}
+	if(q == NULL)
+		cout<<"\n\tCODIGO INCORRECTO...!!\n";
+}
+void mostrar_pacientes(PLista q){
+	int i=1;
+	while(q!=NULL){
+		cout<<"\n\tDATOS DEL PACIENTE ["<<i<<"]";
+		cout<<"\n\t-----------------";
+		cout<<"\n\n\tCODIGO: "<<q->codigo<<endl;
+			cout<<"\n\tNombres: "<<q->nombres<<endl;
+			cout<<"\tApellidos: "<<q->apellidos<<endl;
+			cout<<"\tDireccion: "<<q->direccion<<endl;
+			cout<<"\tTelefono: "<<q->telefono<<endl;
+			q = q ->sgte;
+			i++;
+	}
+}
+
+void copiar_datos_paciente(PLista lista){
+	int cod1, cod2, x;
+	PLista p,q,t;
+	p = lista;
+	q = lista;
+	char dato[maxchar];
+	cout<<"\n\n\n\tCOPIAR DATOS DE PACIENTE A OTRO";
+	cout<<"\n\n\n\t------------------------------";
+	cout<<"\n\n\tINGRESE CODIGO De PACIENTE A COPIAR: "; cin>>cod1;
+	cout<<"\n\n\tINGRESE CODIGO DE PACIENTE A SUSTITUIR: "; cin>>cod2;
+	system("cls");
+	while(p!=NULL){
+		if(p->codigo==cod1){
+			t = p;
+			cout<<"\n\n\tCODIGO: "<<p->codigo<<endl;
+			cout<<"\n\tNombres: "<<p->nombres<<endl;
+			cout<<"\tApellidos: "<<p->apellidos<<endl;
+			cout<<"\tDireccion: "<<p->direccion<<endl;
+			cout<<"\tTelefono: "<<p->telefono<<endl;
+		}
+	p=p->sgte;
+	}
+	while(q!=NULL){
+		if(q->codigo==cod2){
+			cout<<"\n\tDATOS DEL PACIENTE A SUSTITUIR ";
+			cout<<"\n\t------------------------------";
+			cout<<"\n\n\tCODIGO: "<<q->codigo<<endl;
+			cout<<"\n\tNombres: "<<q->nombres<<endl;
+			cout<<"\tApellidos: "<<q->apellidos<<endl;
+			cout<<"\tDireccion: "<<q->direccion<<endl;
+			cout<<"\tTelefono: "<<q->telefono<<endl;
+			menu_actualizar();
+			cin>>x;
+			switch(x){
+				case 1: strcpy(dato,t->nombres);
+						strcpy(q->nombres,dato);
+						break;
+				case 2: strcpy(dato,t->apellidos);
+						strcpy(q->apellidos,dato);
+						break;
+				case 3: strcpy(dato,t->direccion);
+						strcpy(q->direccion,dato);
+						break;
+				case 4: q->telefono=t->telefono; 
+						break;
+				default: cout<<"\nINGRESE UNA OPCON VALIDA....\n";break;
+			}
+			cout<<"\n\n\tREGISTRO ACTUALIZADO...!!!!!!\n";
+			return;
+		} else{
+			q=q->sgte;
+		}
+	}
+	if(q==NULL)
+		cout<<"\n\tCODIGO INCORRECTO...!!\n";
+}
+int main(void){
+	system("color 0a");
+	PLista lista =NULL;
+	int opcion;
+	do{
+		menu();
+		cin>>opcion;
+		switch(opcion){
+			case 1: regisrar_pacientes(lista);
+					break;
+			case 2: if(lista== NULL){
+						cout<<"\n\tNo hay pacientes registrados....!!!!\n";
+					}else{
+						eliminar_paciente(lista);
+					}
+				break;
+			case 3:	if(lista== NULL){
+						cout<<"\n\tNo hay pacientes registrados....!!!!\n";
+					}else{
+						actualizar_paciente(lista);
+					}
+				break;
+			case 4:if(lista== NULL){
+						cout<<"\n\tNo hay pacientes registrados....!!!!\n";
+					}else{
+						mostrar_pacientes(lista);
+					}
+				break;
+			case 5:if(lista== NULL){
+						cout<<"\n\tNo hay pacientes registrados....!!!!\n";
+					}else{
+						copiar_datos_paciente(lista);
+					}
+				break;
+			case 6:return 0;
+			default: cout<<"\nINGRESE UNA OPCION VALIDA...\n";break;	
+		}
+		system("pause"); system("cls");
+	}while(opcion!=6);
+	system("pause");
+	return 0;
+}
