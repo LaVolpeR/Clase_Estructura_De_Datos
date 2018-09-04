@@ -1,0 +1,77 @@
+#include<iostream>
+#include<stdlib.h>
+#include <time.h>
+using namespace std;
+struct nodo{
+	int nro;
+	struct nodo *sgte;
+};
+typedef struct nodo *Tlista;
+void insertar(Tlista &lista, int valor){
+	
+	Tlista t, q = new(struct nodo);
+	q -> nro = valor;
+	q -> sgte = NULL;
+	if(lista==NULL){
+		lista = q;
+	}	
+	else{
+		t= lista;
+		while(t->sgte != NULL){
+			t= t->sgte;
+		}
+		t->sgte = q;
+	}
+}
+
+void mostrar(Tlista lista){
+	int i = 0;
+	while(lista != NULL){
+		cout<<' '<<i+1<<")"<<lista->nro<<endl;
+		lista= lista -> sgte;
+		i++;
+	}
+}
+void mostrar_Par(Tlista lista){
+	int i = 0;
+	while(lista != NULL){
+		if(lista->nro%2==0){
+			cout<<' '<<i+1<<")"<<lista->nro<<endl;
+		}
+		lista= lista -> sgte;
+		i++;
+	}
+}
+
+void mostrar_imPar(Tlista lista){
+	int i = 0;
+	while(lista != NULL){
+		if(lista->nro%2==1){
+			cout<<' '<<i+1<<")"<<lista->nro<<endl;
+		}
+		lista= lista -> sgte;
+		i++;
+	}
+}
+int main(void){
+	srand(time(NULL));
+	int n, suma, valor;
+	Tlista lista = NULL;
+	cout<<"\n Ingrese tamanio de lista: ";
+	cin>>n;
+	for(int i = 0; i<n;i++){
+		valor = rand() % 20+1;
+		insertar(lista,valor);
+	}
+	mostrar(lista);
+
+	cout<<"Los numeros pares son "<<endl;
+	cout<<"-----------------------"<<endl;
+
+	mostrar_Par(lista);
+	
+	cout<<"Los numeros impares son "<<endl;
+	cout<<"-----------------------"<<endl;
+
+	mostrar_imPar(lista);
+}
