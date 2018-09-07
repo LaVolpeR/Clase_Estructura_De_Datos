@@ -1,0 +1,107 @@
+#include<iostream>
+#include<stdlib.h>
+
+using namespace std;
+struct nodo{
+	float nro;
+	struct nodo *sgte;
+};
+typedef struct nodo *Tlista;
+Tlista fin;
+
+
+void insertarInicio(Tlista &lista, float valor){
+	Tlista q = new(struct nodo);
+	q -> nro = valor;
+	q -> sgte = lista;
+	lista = q;
+}
+
+void insertarFinal(Tlista &lista, float valor){
+	Tlista t, q = new(struct nodo);
+	q ->nro = valor;
+	q -> sgte = NULL;
+	fin = q;
+	if(lista == NULL){
+		lista = q;
+	}
+	else {
+		t = lista;
+		while(t->sgte!=NULL){
+			t = lista -> sgte;
+		}
+		t->sgte = q;
+	}
+}
+void insertarElementoEn(Tlista lista, float n){
+	Tlista t,r,q =new(struct nodo);
+	q -> nro = n ;
+	q ->sgte = NULL;
+	while(lista->sgte!=NULL){
+		t=lista->sgte;
+		if((n>=(lista->nro))&&(n<=t->nro)){
+			q->sgte=lista->sgte;
+			lista->sgte =q;
+			return;
+		}
+		lista=lista->sgte;
+	}
+}
+void reportarLista(Tlista lista){
+	int i = 0;
+	while(lista != NULL){
+		cout<<' '<<i+1<<") "<<lista->nro<<endl;
+		lista= lista->sgte;
+		i++;
+	}
+}
+
+void TercioSuperior(Tlista lista){
+		int i = 0;
+		cout<<"Las personas de la lista del tercio superior"<<endl;
+	while(lista != NULL){
+		if(lista->nro>= 15){
+		cout<<' '<<i+1<<") "<<lista->nro<<endl;
+		lista= lista->sgte;
+		}
+		i++;
+	}
+}
+
+int main(void){
+	Tlista lista = NULL;
+	int op , max;
+	float n;
+	system("color 0a");
+	
+	cout<<"Ingresar la lista de alumnos que desea registar"<<endl;
+	cin>>max;
+	
+	for(int i = 0; i<max; i++){
+		cout<<' '<<i+1<<") Ingrese nota"<<endl;
+		do{
+		cin>>n;
+	}while(n>20);
+				if(lista == NULL){
+					insertarFinal(lista,n);			
+				}
+			else{
+				if(n>lista->nro)
+					insertarInicio(lista,n);
+				else if(n>lista->nro)
+				insertarFinal(lista,n);
+				else{
+					if((n>=lista->nro)&&(n<=fin->nro)){
+						insertarElementoEn(lista,n);
+					}
+				}
+			}
+		}
+	reportarLista(lista);
+	cout<<"\n\n";
+	TercioSuperior(lista);
+	
+	
+	system("pause");
+	return 0;
+}
