@@ -1,0 +1,84 @@
+#include<malloc.h>
+#include<conio.h>
+#include<stdio.h>
+#include<iostream>
+#include <time.h>
+#include<stdlib.h>
+
+using namespace std;
+int ma = 0;
+string name2;
+void adicion(int ne);
+void listaizquierda();
+void listaderecha();
+struct nodo{
+	string name;
+	int num;
+	struct nodo *ant, *sgte;
+};
+
+struct nodo *inicio, *ult, *aux;
+
+void adicion(int ne,string name){
+	struct nodo *nuevo;
+	
+	nuevo = (struct nodo*)malloc(sizeof(struct nodo));
+	
+	nuevo->num= ne;
+	nuevo->name= name;
+	if(inicio == NULL){
+		inicio = ult = nuevo;
+		nuevo ->sgte = NULL;
+		nuevo ->ant = NULL;
+	}
+	else{
+		ult->sgte=nuevo;
+		nuevo->ant=ult;
+		ult=nuevo;
+		nuevo->sgte=NULL;
+	}
+}
+
+void listaderecha(){
+	aux = inicio;
+	while(aux!=NULL){
+		cout<<"\n"<<aux->name;
+		cout<<"\n"<<aux->num;
+		aux = aux->sgte;
+	}
+}
+
+void mayor(){
+	aux = inicio;
+	while(aux != NULL){
+	if(aux->num >= ma){
+		ma = aux->num;
+		name2 = aux->name;	
+	}
+	aux = aux->sgte;
+	}
+	
+	cout<<"\nEL alumno con mayor nota es"<<endl;
+	cout<<name2<<endl;
+	cout<<ma;
+}
+int main(){
+	
+srand(time(NULL));
+
+	int n,x, i = 0;
+	string nombre;
+	aux=ult=inicio=NULL; 
+	cout<<"escriba la cantidad de alumnos que desea registrar"<<endl;
+	cin>>n;
+	do{
+		i++;
+	cout<<' '<<i<<")\tNombre: "; cin>>nombre;
+	x = rand() % 20;
+	adicion(x,nombre);
+	
+	}while(i < n);
+	listaderecha();
+	mayor();
+	
+}
