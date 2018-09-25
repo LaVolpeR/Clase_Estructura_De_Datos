@@ -3,7 +3,7 @@
 #include<string.h>
 #include<stdlib.h>
 #include<stdio.h>
-
+//https://ebookcentral.proquest.com/lib/upnortesp/reader.action?docID=3194764&query=c%2B%2B
 using namespace std;
 
 struct datos{
