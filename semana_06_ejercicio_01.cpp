@@ -8,6 +8,8 @@ using namespace std;
 float time = 0;
 struct datos{
 	float dato;
+	float 
+	string name;
 	datos *sig;
 }*p,*aux,*u;
 void insertar(float dat);
@@ -16,10 +18,12 @@ void listar();
 int main(){
 	string name;
 	float tiempo;
-	int opc;
-	
-	
+	int opc, number,i = 0;
+	cout<<"Ingrese la cantidad de usuarios que estan en el banco"<<endl;
+	cin>>number;
+	do{
 	cout<<"INGRESE NOMBRE: ";cin>>name;
+	nombre(name);
 	do{
 		system("cls");
 		tiempo = 0;
@@ -68,9 +72,11 @@ int main(){
 	cout<<"Usted estuvo: "<<time<<" min.";
 		exit(1);
 	default: cout<<"\n Opcion no valida!!";break;
+
 	}
 }while(opc);
-
+i++;
+}while(i!=number);
 }
 
 void listar(){
@@ -89,6 +95,19 @@ void listar(){
 void insertar(float dat){
 	aux=new(datos);
 	aux->dato=dat;
+	if(u){
+		u->sig=aux;
+		aux->sig=NULL;
+		u = aux;
+	}
+	else{
+		p=u=aux;
+	}
+}
+
+void nombre(string name){
+	aux=new(datos);
+	aux->name=dat;
 	if(u){
 		u->sig=aux;
 		aux->sig=NULL;
