@@ -1,0 +1,104 @@
+#include <iostream>
+#include <stdlib.h>
+#include <time.h>       
+
+using namespace std;
+float perdida =0 ;
+float ganancia= 0;
+
+float ganancia_par = 0;
+float Perdida_par =0 ;
+struct entrega{
+	float tiempo;
+	float costo;
+	string nombre;
+	string codigo;
+
+	struct entrega *sgte;
+};
+
+
+typedef struct entrega *Tlista;
+void registrar(Tlista &lista, string x, string y, float w, float z);
+
+void registrar(Tlista &lista, string x, string y, float w, float z){
+	Tlista t, q = new(struct entrega);
+	q->nombre = x;
+	q->codigo = y;
+	q->costo = z;
+	q->tiempo = w;
+	q->sgte = NULL;
+	if(lista==NULL){
+		lista = q;
+	}	
+	else{
+		t= lista;
+		while(t->sgte != NULL){
+			t= t->sgte;
+		}
+		t->sgte = q;
+	}
+}
+
+void imprimir(Tlista lista){
+	int i = 0;
+	while(lista != NULL){
+		cout<<"=========================="<<endl;
+		cout<<"La "<<i+ 1<<"  entrega"<<endl;
+		cout<<"El costo es: "<<lista->costo<<endl;
+		cout<<"EL que lo entrego es: "<<lista->nombre<<endl;
+		cout<<"Su codigo es: "<<lista->codigo<<endl;
+		cout<<"Se demoro: "<<lista->tiempo<<endl;
+		lista = lista->sgte;
+		i++;
+	}
+	
+}
+
+int main(){
+	  srand (time(NULL));
+	int nro_entrega; 
+	string codigo;
+	float time;
+	float costos;
+	string name;
+	Tlista lista = NULL;
+	for(int i = 0; i < 2; i++){
+		cout<<"==================================="<<endl;
+		ganancia_par = 0;
+			Perdida_par = 0;
+		cout<<"Cual es su nombre? ";
+		cin>>name;
+		cout<<"Cual es su codigo? ";
+		cin>>codigo;
+		cout<<"Cuantas entrega realizo? ";
+		cin>>nro_entrega;
+		for(int j = 0; j< nro_entrega; j++ ){
+			
+			cout<<"================================================="<<endl;
+			cout<<j+1<<".- ENTREGA";
+			cout<<"Cuanto demoro en hacer la entrega? ";
+			cin>>time;
+			
+			cout<<"Cuanto es el costo de la entrega? ";
+			cin>>costos;
+			 ganancia += costos;
+			 ganancia_par += costos;
+			if(time>= 30){
+				cout<<"Tiempo sobrepaso a lo establecido y se hizo un descuento y quedo en total: "<<costos * 30 / 100<<endl;
+				
+				perdida += costos * 30 / 100;
+				Perdida_par += costos * 30 / 100;
+				registrar(lista,name,codigo,time,costos);
+			}
+			else{
+				registrar(lista,name,codigo,time,costos);
+			}
+			
+		}
+		cout<<"Ganancia: "<<ganancia_par<<"\t\tPerdida: "<<Perdida_par<<endl;
+	}
+	imprimir(lista);
+	cout<<"============================================================"<<endl;
+	cout<<"La ganacia es: "<<ganancia<<"\t\tLa perdida es: "<<perdida;
+}
