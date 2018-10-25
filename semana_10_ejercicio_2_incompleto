@@ -1,0 +1,110 @@
+#include<stdlib.h>
+#include<stdio.h>
+#include<iostream>
+#define TRUE 1
+#define FALSE 0
+
+using namespace std;
+
+typedef struct _nodo{
+	int dato;
+	struct _nodo *derecho;
+	struct _nodo *izquierdo;
+} tipoNodo;
+
+typedef tipoNodo *pNodo;
+typedef tipoNodo *Arbol;
+
+void Insertar(Arbol *a, int dat); //Funcion de búsqueda:
+
+int Vacio(Arbol r);//Comprobar si es un nodo hoja:
+
+int EsHoja(pNodo r);//Aplicar una funcion  a cada ekemento del arbol:
+
+void PreOrden(Arbol, void (*func)(int*));
+
+//funcion auxiliares
+void Mostrar(int *d);
+
+int main(){
+	Arbol ArbolInt = NULL;
+	int altura;
+	int nnodos;
+	
+	//Insercion de nodos en arbol:
+	Insertar(&ArbolInt, 10);
+	Insertar(&ArbolInt, 5);
+	Insertar(&ArbolInt, 12);
+	Insertar(&ArbolInt, 4);
+	Insertar(&ArbolInt, 7);
+	Insertar(&ArbolInt, 3);
+	Insertar(&ArbolInt, 6);
+	Insertar(&ArbolInt, 9);
+	Insertar(&ArbolInt, 8);
+	Insertar(&ArbolInt, 11);
+	Insertar(&ArbolInt, 14);
+	Insertar(&ArbolInt, 13);
+	Insertar(&ArbolInt, 2);
+	Insertar(&ArbolInt, 1);
+	Insertar(&ArbolInt, 15);
+	Insertar(&ArbolInt, 10);
+	Insertar(&ArbolInt, 17);
+	Insertar(&ArbolInt, 18);
+	Insertar(&ArbolInt, 16);
+	
+	cout<<"PreOrden: "<<endl;
+	PreOrden(ArbolInt, Mostrar);
+}
+
+void Insertar(Arbol *a, int dat){
+	pNodo padre = NULL;
+	pNodo actual = *a;
+	
+	//Buscar el dato en el arbol, manteniendo un puntero al nodo padre
+	while(!Vacio(actual)&& dat!=actual->dato){
+		padre = actual;
+		if(dat < actual->dato) actual = actual->izquierdo;
+		else if(dat > actual->dato) actual = actual->derecho;
+	}
+	//Si se ha encontrado el elemento, regresar sin insertar
+	if(!Vacio(actual)) return;
+	//Si padre es NULL, entonces el arbol estaba vacio, el nuevo nodo sera el nodo raiz
+	if(!Vacio(padre)){
+		*a = (Arbol)malloc(sizeof(tipoNodo));
+		(*a)->dato = dat;
+		(*a)->izquierdo = (*a)->derecho = NULL;
+	}
+	//si el dato es menor que el que contiene el nodo padre, lo insertamos en la rama izquierda
+	else if(dat< padre->dato){
+		actual = (Arbol)malloc(sizeof(tipoNodo));
+		actual->izquierdo = actual;
+		actual->dato = dat;
+		actual->izquierdo = actual->derecho = NULL;
+	}
+	//Si el dato es mayor que el que contiene el nodo padre, lo insertamos en la rama derecha
+	else if(dat>padre->dato){
+		actual = (Arbol)malloc(sizeof(tipoNodo));
+		padre->derecho = actual;
+		actual->dato = dat;
+		actual->izquierdo = actual->derecho = NULL;
+	}
+}
+/*REcorrido de arbol en preorden, aplicamos la funcion func. que tiene el protorio:
+void func(int*):*/
+void PreOrden(Arbol a,void(*func)(int*)){
+	func(&(a->dato));
+	if(a->izquierdo) PreOrden(a->izquierdo,func);
+	if(a->derecho) PreOrden(a->derecho,func);
+}
+//comprovar si un arbol es vacio
+int Vacio(Arbol r){
+	return r == NULL;
+}
+
+int EsHoja(pNodo r){
+	return !r->derecho && !r->izquierdo;
+}
+
+void Mostrar(int *d){
+	printf("%d, ", *d);
+}
