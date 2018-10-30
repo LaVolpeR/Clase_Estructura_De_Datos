@@ -1,0 +1,178 @@
+#include<iostream>
+#include<conio.h>
+#include<stdlib.h>
+using namespace std;
+
+struct Nodo{
+	int dato;
+	Nodo *der;
+	Nodo *izq;
+};
+
+Nodo *arbol = NULL;
+//Prototipos
+void menu();
+Nodo *crearNodo(int);
+void insertarNodo(Nodo *&,int);
+void mostrarArbol(Nodo *arbol, int cont);
+bool busqueda(Nodo *,int);
+void preOrden(Nodo *);
+void inOrden(Nodo *);
+void postOrden(Nodo *);
+
+int main(){
+	menu();
+	getch();
+	return 0;
+}
+
+//funcion de menu
+void menu(){
+	int dato, opcion , contador=0;
+	do{
+		cout<<"\t.:MENU:."<<endl;
+		cout<<"1. Insertar nuevo nodo"<<endl;
+		cout<<"2. Mostrar el arbol completo"<<endl;
+		cout<<"3. Buscar un elemento en el arbol"<<endl;
+		cout<<"4. Recorrer el arbol en PreORden"<<endl;
+		cout<<"5. Recorrer el arbol en inOrden"<<endl;
+		cout<<"6. Recorrer el arbol en postOrden"<<endl;
+		cout<<"7. Salir"<<endl;
+		cin>>opcion;
+		
+		switch(opcion){
+			case 1: cout<<"\nDigite un numero: ";
+					cin>>dato;
+					insertarNodo(arbol,dato);//Insertamos un nuevo nodo
+					cout<<"\n";
+					system("pause");
+			break;
+			case 2: cout<<"\nMostrando el arbol completo: \n\n";
+					mostrarArbol(arbol,contador);
+					cout<<"\n"<<endl;
+					system("pause");
+				break;
+			case 3:	cout<<"\nDigite el elementoa a buscar: ";
+					cin>>dato;
+					if(busqueda(arbol,dato) == true){
+						cout<<"\nElemento "<<dato<<" a sido encontrado en el arbol\n";
+					}
+					else{
+						cout<<"\nElemento no encontrado\n";
+					}
+					cout<<"\n";
+					system("pause");
+				
+				break;
+			case 4:	cout<<"\nRecorrido en PreOrden: ";
+					preOrden(arbol);
+					cout<<"\n\n";
+					system("pause");
+					break;
+			case 5:	cout<<"\nRecorrido en InOrden: ";
+					inOrden(arbol);
+					cout<<"\n\n";
+					system("pause");
+					break;
+			case 6:	cout<<"\nRecorrido en postOrden: ";
+					postOrden(arbol);
+					cout<<"\n\n";
+					system("pause");
+					break;
+		}
+		system("cls");
+	}while(opcion != 7);
+}
+
+
+//funcion para insertar elementos en el arbol
+void insertarNodo(Nodo *&arbol,int n){
+	if(arbol==NULL){///Si el arbol esta vacio
+		Nodo *nuevo_nodo = crearNodo(n);
+		arbol = nuevo_nodo;
+	}
+	else{//Si el arbol tiene un NODO o mas
+		int valorRaiz = arbol->dato;//Obtenemos el valor de la raiz
+		if(n<valorRaiz){//Si el elemento es menor ala raiz, insertamos en izq
+			insertarNodo(arbol->izq,n);
+		}
+		else{//Si el elemento es mayor ala raiz, insertamos en der
+			insertarNodo(arbol->der,n);
+		}
+	}
+}
+//funcion para mostrar el arbol completo
+void mostrarArbol(Nodo *arbol, int cont){
+	if(arbol== NULL){ //Si el arbol esta vacio
+		return ;
+	}
+	else{
+		mostrarArbol(arbol->der,cont +1);
+		for(int i=0;i<cont;i++){
+			cout<<"\t";
+		}
+		cout<<arbol->dato<<endl;
+		mostrarArbol(arbol->izq,cont +1);
+	}
+}
+//funcion para crear un nuevo nodo
+Nodo *crearNodo(int n){
+	Nodo *nuevo_nodo = new Nodo();
+	
+	nuevo_nodo->dato = n;
+	nuevo_nodo->der = NULL;
+	nuevo_nodo->izq = NULL;
+	
+	return nuevo_nodo;
+}
+
+//funcion para buscar un elemento en el arbol
+bool busqueda(Nodo *arbol,int n){
+	if(arbol == NULL){//si el arbol esta vacio
+		return false;
+	}
+	else if(arbol->dato == n ){//Si el nodo es igual al elemento
+		return true;
+	}
+	else if(n<arbol->dato){
+		return busqueda(arbol->izq,n);
+	}
+	else{
+		return busqueda(arbol->der,n);
+	}
+}
+
+//funcion para recorrido en profundidad - PreOrden
+void preOrden(Nodo *arbol){
+	if(arbol == NULL){
+		return;
+	}
+	else{
+		cout<<arbol->dato<<" - ";
+		preOrden(arbol->izq);
+		preOrden(arbol->der);
+	}
+}
+
+//funcion para recorrido en profundidad - inOrden
+void inOrden(Nodo *arbol){
+	if(arbol==NULL){
+		return;
+	}
+	else{
+		inOrden(arbol->izq);
+		cout<<arbol->dato<<" - ";
+		inOrden(arbol->der);
+	}
+}
+//funcion para recorrido en profundidad - PostOrden
+void postOrden(Nodo *arbol){
+	if(arbol==NULL){
+		return;
+	}
+	else{
+		postOrden(arbol->izq);
+		postOrden(arbol->der);
+		cout<<arbol->dato<<" - ";
+	}
+}
