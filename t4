@@ -1,0 +1,221 @@
+#include<iostream>
+#include<stdlib.h>
+#include<conio.h>
+using namespace std;
+struct nodo
+{
+	char nombre;
+	struct nodo *sgte;
+	struct arista *ady;
+};
+struct arista
+{
+	struct nodo *destino;
+	struct arista *sgte;
+};
+typedef struct nodo *Tnodo;
+typedef struct arista *Tarista;
+Tnodo p;
+int cont = 0;
+void menu()
+{
+	cout<<"\n\tPROYECTO T4\n\n";
+	cout<<"1. INSERTAR UN NODO"<<endl;
+	cout<<"2. INSERTAR UNA ARISTA"<<endl;
+	cout<<"3. MOSTRAR GRAFO"<<endl;
+	cout<<"4. SALIR"<<endl;
+	cout<<"\nINGRESE OPCION: ";
+}
+void insertar_nodo()
+{
+	Tnodo t,nuevo=new struct nodo;
+	cout<<"INGRESE VARIABLE: ";
+	cin>>nuevo->nombre;
+	nuevo->sgte=NULL;
+	nuevo->ady=NULL;
+	if(p==NULL)
+	{
+		p=nuevo;
+		cout<<"PRIMER NODO...!!!";
+	}
+	else
+	{
+		t=p;
+		while(t->sgte!=NULL)
+		{
+			t=t->sgte;
+		}
+		t->sgte=nuevo;
+		cout<<"NODO INGRESADO.....!!!!";
+	}
+}
+void agrega_arista(Tnodo &aux,Tnodo &aux2,Tarista &nuevo)
+{
+	Tarista q;
+	if(aux->ady==NULL)
+	{
+		aux->ady=nuevo;
+		nuevo->destino=aux2;
+		cout<<"PRIMERA ARISTA..!!";
+	}
+	else
+	{
+		q=aux->ady;
+		while(q->sgte!=NULL)
+		q=q->sgte;
+		nuevo->destino=aux2;
+		q->sgte=nuevo;
+		cout<<"ARISTA AGREGADA...!!!";
+	}
+}
+void insertar_arista()
+{
+	char ini,fin;
+	Tarista nuevo=new struct arista;
+	Tnodo aux, aux2;
+	if(p==NULL)
+	{
+		cout<<"GRAFO VACIO....!!!!";
+		return ;
+	}
+	nuevo->sgte=NULL;
+	cout<<"INGRESE NODO DE INICIO: ";
+	cin>>ini;
+	cout<<"INGRESE NODO FINAL: ";
+	cin>>fin;
+	aux=p;
+	aux2=p;
+	while(aux2!=NULL)
+	{
+		if(aux2->nombre==fin)
+		{
+			break;
+		}
+		aux2=aux2->sgte;
+	}
+	while(aux!=NULL)
+	{
+		if(aux->nombre==ini)
+		{
+			agrega_arista(aux,aux2,nuevo);
+			break;
+		}
+		aux=aux->sgte;
+	}
+}
+void mostrar_grafo()
+{
+	Tnodo ptr;
+	Tarista ar;
+	ptr=p;
+	cout<<"NODO|LISTA DE ADYACENCIA\n";
+	while(ptr!=NULL)
+	{
+		cout<<"  "<<ptr->nombre<<"|";
+		if(ptr->ady!=NULL)
+		{
+			ar=ptr->ady;
+			while(ar!=NULL)
+			{
+				cout<<" "<<ar->destino->nombre;
+				ar=ar->sgte;
+			}
+		}
+		ptr=ptr->sgte;
+		cout<<endl;
+	}
+}
+void multigrafo()
+{
+	Tnodo ptr,aux;
+	Tarista ar;
+	bool v=false;
+	ptr=p;
+	if(ptr==NULL)
+	{
+		return ;
+	}
+	else
+	{
+		while(ptr!=NULL)
+		{
+			if(ptr->ady!=NULL)
+			{
+				while(ptr->ady!=NULL)
+				{
+					if(ptr->ady->destino->ady!=NULL)
+					{
+						aux=ptr->ady->destino;
+						if(ptr->nombre!=aux->nombre)
+						{
+							if(aux->ady->destino->nombre==ptr->nombre)
+							{
+								v=true;
+							}		
+						}
+		
+					}
+					ptr->ady=ptr->ady->sgte;							
+				}
+				ptr=ptr->sgte;
+			}
+			else
+			{
+				ptr=ptr->sgte;
+			}
+		}
+	}
+	if(v)
+	{
+		cout<<"\nEs multigrafo";
+	}
+	else
+	{
+		cout<<"\nNo es multigrafo";
+	}
+}
+void euleriano()
+{	
+	if(cont%2 == 0 && cont != 0){
+		cout<<"\nGrafo euleriano no dirigido";
+	}
+	
+	else{
+		cout<<"\nNo es Grafo euleriano";
+	}
+}
+
+int main()
+{
+	p=NULL;
+	int op;
+	do
+	{
+		menu();
+		cin>>op;
+		switch(op)
+		{
+			case 1:
+				insertar_nodo();break;
+			case 2:
+				insertar_arista();
+				cont++;
+				break;
+			case 3:
+				mostrar_grafo();
+				multigrafo();
+				euleriano();
+				cont=0;
+				getch();
+				break;
+			case 4:
+				break;
+			default:
+				cout<<"Opcion no valida!!!!!";break;
+		}
+		cout<<endl<<endl;
+		system("pause");system("cls");
+	}while(op!=4);
+	getch();
+	return 0;
+}
