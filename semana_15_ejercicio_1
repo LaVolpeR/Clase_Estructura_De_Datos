@@ -1,0 +1,66 @@
+#include<iostream>
+#include<conio.h>
+#include<stdlib.h>
+
+using namespace std;
+
+struct Nodo{
+	string pila;
+	Nodo *siguiente;
+};
+
+void agregar_pila(Nodo *&pila, string n);
+void sacarPila(Nodo *&pila,string &n);
+void menu();
+
+int main(){
+	int opc = 0;
+	 Nodo *pila = NULL;
+	string dato;
+	do{
+		menu();
+		cin>>opc;
+		switch(opc){
+			case 1:	cout << "\nIngrese un numero: ";
+   				 cin >> dato;
+    			agregar_pila(pila, dato);
+	
+				break;
+			case 2:	cout << "\n";
+   			 while(pila!=NULL){
+  			  sacarPila(pila, dato);
+   			 if(pila!= NULL){
+           cout <<dato<< " , ";
+   		  }else{
+            cout <<dato<< ".\n";
+  			   }	
+   			
+   		}
+   		 getch();
+				break;
+	}system("cls");
+	}while(opc != 3);
+}
+
+void agregar_pila(Nodo *&pila, string n){
+ Nodo *nuevo_nodo = new Nodo();
+ nuevo_nodo->pila = n;
+ nuevo_nodo->siguiente = pila;
+ pila = nuevo_nodo;
+}
+
+void sacarPila(Nodo *&pila,string &n){
+ Nodo *aux = pila ;
+ n=aux->pila;
+ pila=aux->siguiente,
+ delete aux ;
+}
+
+
+void menu(){
+	cout<<"\t\t.:Menu:.\n";
+	cout<<"\n1. Insertar Pila";
+	cout<<"\n2. Mostrar Pila";
+	cout<<"\n3. Salir";
+	cout<<"\nOpcion: ";
+}
