@@ -1,0 +1,90 @@
+#include<iostream>
+#include<stdlib.h>
+#include<conio.h>
+
+void Menu();
+using namespace std;
+
+struct nodo{
+	float nro;
+	struct nodo *sgte;
+};
+
+nodo *p=NULL;
+
+void ingresar(nodo *&p)
+{
+	nodo *n1,*n2=new nodo();
+	cout<<"Ingrese un numero: ";cin>>n2->nro;
+	n2->sgte=NULL;
+	if(p==NULL)
+	{
+		p=n2;
+	}
+	else
+	{
+		n1=p;
+		while(n1->sgte!=NULL)
+		{
+			n1=n1->sgte;
+		}
+		n1->sgte=n2;
+	}
+}
+
+void mostrar()
+{
+	int cant=0;
+	float sum=0;
+	nodo *imprimir=new nodo();
+	imprimir=p;
+	if(p==NULL)
+	{
+		return ;
+	}
+	else
+	{
+		cout<<"\nMostrando numeros"<<endl;
+		cout<<"\n";
+		while(imprimir!=NULL)
+		{
+			cout<<imprimir->nro;
+			if(imprimir->sgte!=NULL)
+			{
+				cout<<" , ";
+			}
+			cant++;
+			sum=sum+imprimir->nro;
+			imprimir=imprimir->sgte;
+		}
+	}
+	cout<<"\n\nPromedio: "<<sum/cant;
+	p=NULL;
+}
+
+int main(void){
+
+	int op;
+	float n;
+	do{
+		Menu();
+		cin>>op;
+		switch(op){
+			case 1:
+					ingresar(p);
+			break;
+			case 2:
+			mostrar();
+			getch();
+			break;
+		}
+		system("pause");system("cls");
+	}while(op != 3);
+}
+void Menu(){
+	cout<<"\t\t\t.:Menu:."<<endl;
+	cout<<"\t1. Ingresar numeros reales"<<endl;
+	cout<<"\t2. Mostrar numeros reales"<<endl;
+	cout<<"\t3. Salir"<<endl;
+	cout<<"opc: "<<endl;
+}
